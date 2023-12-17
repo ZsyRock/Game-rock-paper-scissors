@@ -1,0 +1,58 @@
+import random
+
+repeat_times = int(input("请输入要重复执行的次数："))
+def allocate_points():
+    while True:
+        points = random.sample(range(0, 6), 3)
+        if sum(points) == 8:
+            return points
+
+# 分配点数给A1、B1和C1
+A1, B1, C1 = allocate_points()
+
+def play_game():
+    win_count = 0
+    win_combinations = {}  # 用于存储甲获胜的组合及其次数
+
+    for _ in range(repeat_times):
+        # 初始化得分和初始值
+        score_a = 8
+        score_b = 8
+        values_a = [0, 0, 0]
+        values_b = [0, 0, 0]
+
+        # 分配初始值
+        values_a = allocate_points()
+        values_b = allocate_points()
+
+        # 判断甲乙双方是否满足条件
+        if values_a[0] >= values_b[1]:
+            score_b -= min(values_b[1], 2)
+        if values_a[1] >= values_b[2]:
+            score_b -= min(values_b[2], 2)
+        if values_a[2] >= values_b[0]:
+            score_b -= min(values_b[0], 2)
+        if values_a[0] <= values_b[2]:
+            score_a -= min(values_a[0], 2)
+        if values_a[1] <= values_b[0]:
+            score_a -= min(values_a[1], 2)
+        if values_a[2] <= values_b[1]:
+            score_a -= min(values_a[2], 2)
+
+        # 判断甲乙的得分大小
+        if score_a > score_b:
+            win_count += 1
+            combination = tuple(values_a)
+            if combination in win_combinations:
+                win_combinations[combination] += 1
+            else:
+                win_combinations[combination] = 1
+
+    # 输出甲获胜次数和获胜次数最多的组合
+    print("甲获胜次数:", win_count)
+    if win_count > 0:
+        max_combination = max(win_combinations, key=win_combinations.get)
+        print("获胜次数最多的组合:", max_combination)
+
+# 运行游戏
+play_game()
