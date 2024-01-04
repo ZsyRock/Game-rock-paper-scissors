@@ -1,31 +1,32 @@
+# this is a little program to check the winning rate when playing Game-Rock-Paper-Scissors via a personalize rule
 import random
 
-repeat_times = int(input("请输入要重复执行的次数："))
+repeat_times = int(input("Please input the repeat count："))
 def allocate_points():
     while True:
         points = random.sample(range(0, 6), 3)
         if sum(points) == 8:
             return points
 
-# 分配点数给A1、B1和C1
+# assign point to A1, B1 and C1
 A1, B1, C1 = allocate_points()
 
 def play_game():
     win_count = 0
-    win_combinations = {}  # 用于存储甲获胜的组合及其次数
+    win_combinations = {}  # to storage the won combo of Player1 and what its combo like
 
     for _ in range(repeat_times):
-        # 初始化得分和初始值
+        # initiate the score and init value
         score_a = 8
         score_b = 8
         values_a = [0, 0, 0]
         values_b = [0, 0, 0]
 
-        # 分配初始值
+        # assign the init value
         values_a = allocate_points()
         values_b = allocate_points()
 
-        # 判断甲乙双方是否满足条件
+        # Judge whether Player1 and Player2 reach the standard
         if values_a[0] >= values_b[1]:
             score_b -= min(values_b[1], 2)
         if values_a[1] >= values_b[2]:
@@ -39,7 +40,7 @@ def play_game():
         if values_a[2] <= values_b[1]:
             score_a -= min(values_a[2], 2)
 
-        # 判断甲乙的得分大小
+        # Judge which score is higher between Player1 and Player2
         if score_a > score_b:
             win_count += 1
             combination = tuple(values_a)
@@ -48,11 +49,11 @@ def play_game():
             else:
                 win_combinations[combination] = 1
 
-    # 输出甲获胜次数和获胜次数最多的组合
-    print("甲获胜次数:", win_count)
+    # Output the combination with most won times of Player1
+    print("Plaer1 wons:", win_count)
     if win_count > 0:
         max_combination = max(win_combinations, key=win_combinations.get)
-        print("获胜次数最多的组合:", max_combination)
+        print("The combination with most won times:", max_combination)
 
-# 运行游戏
+# Run the game
 play_game()
